@@ -37,7 +37,9 @@ function getJwtMessage(jwt: string): Uint8Array {
 }
 
 function getJwtSignature(jwt: string): Uint8Array {
-  return base64url.parse(jwt.split(".")[2]);
+  const signature = jwt.split(".")[2];
+  console.log(signature);
+  return base64url.parse(signature, { loose: true });
 }
 
 /**
