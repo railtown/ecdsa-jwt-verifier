@@ -2,8 +2,10 @@
   "name": "ecdsa-jwt-verifier",
   "version": "1.0.0",
   "main": "dist/bundle.js",
-  "types": "src/main.d.ts",
+  "types": "dist/src/index.d.ts",
   "devDependencies": {
+    "ts-loader": "^8.0.4",
+    "typescript": "^4.0.3",
     "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   },

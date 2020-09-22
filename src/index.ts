@@ -1,21 +1,24 @@
 import { base64url } from "rfc4648";
 
-function parseJwt(jwt) {
-  const { headerb64, payloadb64 } = jwt.split(".");
+function parseJwt(jwt: string) {
+  const [headerb64, payloadb64] = jwt.split(".");
 
-  const header = atob(headerb64);
-  const payload = atob(payloadb64);
+  const header = JSON.parse(atob(headerb64));
+  const payload = JSON.parse(atob(payloadb64));
 
   return { header, payload };
 }
 
-const hashMap = new Map([
+type Algorithms = "ES256" | "ES384" | "ES512";
+type HashAlgorithms = "SHA-256" | "SHA-384" | "SHA-512";
+
+const hashMap = new Map<Algorithms, HashAlgorithms>([
   ["ES256", "SHA-256"],
-  ["ES384", "SHA-348"],
+  ["ES384", "SHA-384"],
   ["ES512", "SHA-512"],
 ]);
 
-function determineHash(jwt) {
+function determineHash(jwt: string): string {
   const {
     header: { alg },
   } = parseJwt(jwt);
@@ -25,15 +28,15 @@ function determineHash(jwt) {
   return hashMap.get(alg);
 }
 
-function cleanUpJwk({ alg, ...remainder }) {
+function cleanUpJwk({ alg, ...remainder }: any): any {
   return remainder;
 }
 
-function getJwtMessage(jwt) {
+function getJwtMessage(jwt: string): Uint8Array {
   return new TextEncoder().encode(jwt.split(".").slice(0, 2).join("."));
 }
 
-function getJwtSignature(jwt) {
+function getJwtSignature(jwt: string): Uint8Array {
   return base64url.parse(jwt.split(".")[2]);
 }
 
@@ -43,7 +46,10 @@ function getJwtSignature(jwt) {
  *   will be used to verify the ECDA-signed JWT
  * @param {string} token The ECDSA-signed JWT to be verified
  */
-export async function verifyEcdsaJwt(key, token) {
+export async function verifyEcdsaJwt(
+  key: any,
+  token: string
+): Promise<boolean> {
   const signature = getJwtSignature(token);
   const message = getJwtMessage(token);
 
