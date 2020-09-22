@@ -1,0 +1,17 @@
+{
+  "name": "ecdsa-jwt-verifier",
+  "version": "1.0.0",
+  "main": "dist/bundle.js",
+  "types": "src/main.d.ts",
+  "devDependencies": {
+    "webpack": "^4.44.2",
+    "webpack-cli": "^3.3.12"
+  },
+  "scripts": {
+    "build": "webpack --mode=production"
+  },
+  "license": "Copyright © 2020 Railtown Ventures",
+  "dependencies": {
+    "rfc4648": "^1.4.0"
+  }
+}
