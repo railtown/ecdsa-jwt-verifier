@@ -55,12 +55,20 @@ export async function verifyEcdsaJwt(
   const signature = getJwtSignature(token);
   const message = getJwtMessage(token);
 
+  const publicKey = await window.crypto.subtle.importKey(
+    "jwk",
+    cleanUpJwk(key),
+    { name: "ECDSA", namedCurve: "P-256" },
+    true,
+    ["verify"]
+  );
+
   let result = await window.crypto.subtle.verify(
     {
       name: "ECDSA",
       hash: { name: determineHash(token) },
     },
-    cleanUpJwk(key),
+    publicKey,
     signature,
     message
   );
